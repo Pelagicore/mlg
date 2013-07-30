@@ -1,14 +1,15 @@
 from abstract.AbstractFileGenerator import AbstractFileGenerator
 import src.Sentences as s
-import distutils.spawn, os, hashlib, subprocess, random, tempfile
+import os, hashlib, subprocess, random, tempfile
 from random import randint
 from struct import pack
+from distutils import spawn
 
 
 class MP3FileGenerator (AbstractFileGenerator):
-	lame_binary = distutils.spawn.find_executable("lame")
-	id3v2_binary = distutils.spawn.find_executable("id3v2")
-	convert_binary = distutils.spawn.find_executable("convert")
+	lame_binary = spawn.find_executable("lame")
+	id3v2_binary = spawn.find_executable("id3v2")
+	convert_binary = spawn.find_executable("convert")
 
 	def getFile(self, location = "/tmp/", properties = {}):
 		print self.properties

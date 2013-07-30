@@ -1,12 +1,13 @@
 from src.generators.abstract.AbstractFileGenerator import AbstractFileGenerator
-import distutils, os, binascii, subprocess, random, hashlib
+import os, binascii, subprocess, random, hashlib
 import src.Sentences as s
 from random import randint, choice
+from distutils import spawn
 
 
 class ImageFileGenerator (AbstractFileGenerator):
-	convert_binary = distutils.spawn.find_executable("convert")
-	exiftool_binary = distutils.spawn.find_executable("exiftool")
+	convert_binary = spawn.find_executable("convert")
+	exiftool_binary = spawn.find_executable("exiftool")
 
 	def getFile(self, location = "/tmp/", properties = {}):
 		properties = dict(self.properties.items() + properties.items())

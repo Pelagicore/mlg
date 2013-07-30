@@ -30,7 +30,7 @@ class AbstractFileGenerator:
 		f = tempfile.NamedTemporaryFile(mode="wb")
 		target = filesize / 8
 		for x in range(0,target):
-			f.write(pack("l", random.getrandbits(63)))
+			f.write(pack("I", random.getrandbits(31)))
 		f.flush()
 		return f
 
