@@ -5,7 +5,7 @@ to the file generator. Invoke it with --help to get a list of the available
 configurations options
 """
 
-import glob, importlib, argparse, itertools, hashlib, random
+import glob, importlib, argparse, itertools, hashlib, random, sys
 import src.Sentences as Sentences
 from src.DirectoryTreeGenerator import DirectoryTreeGenerator, FilePlacer
 from random import randint
@@ -71,6 +71,13 @@ class FileGenerator:
 		fp = FilePlacer(tree)
 		fp.generateSingles(args, gen)
 
+
+def dump_settings(dest):
+	""" Dump the arguments of the script to a file, so that this run can be
+	reproduced """
+	with open(dest, "w") as f:
+		f.write(" ".join(sys.argv[:]))
+
 def registerArguments(parser, fg):
 	""" Register arguments for this script, this will query each module for
 	their respective arguments and add these as sub-parameters triggered
@@ -96,6 +103,7 @@ def registerArguments(parser, fg):
 	parser.add_argument("--random-seed",     type=int, default=None)
 	parser.add_argument("--album-naming-strategy",type=str,
 	            choices=["date", "music", "hash"], default="hash")
+	parser.add_argument("--dump-settings", action="store_true")
 
 	subparsers = parser.add_subparsers(dest="generatorModule")
 	for g in fg.getGeneratorNames():
@@ -119,5 +127,8 @@ if __name__ == "__main__":
 	# In order to reproduce results we may initialize the PRNG with a seed
 	# of our choice. None here will mean a seed is picked for us
 	random.seed(args.random_seed)
+
+	if args.dump_settings:
+		dump_settings("%s/%s" % (args.destination_dir, "args.txt"))
 
 	fg.generate(args)
