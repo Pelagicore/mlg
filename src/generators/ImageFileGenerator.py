@@ -37,9 +37,11 @@ class ImageFileGenerator (AbstractFileGenerator):
 	def _get_property(self, prop, properties):
 		if properties is not None and prop in properties:
 			return properties[prop]
-		elif prop == "count": return 15
-		elif prop == "WxH": return "%sx%s" % (randint(10,80),
-		                                      randint(10,80))
+		elif prop == "size_multiplier": return 1
+		elif prop == "WxH":
+			ct = self._get_property("size_multiplier", properties)
+			return "%sx%s" % (randint(10,80) * ct,
+			                  randint(10,80) * ct)
 		elif prop == "extension":
 			return choice(["jpg", "png", "gif", "tiff"])
 		elif prop == "Title": return s.getSentence()
