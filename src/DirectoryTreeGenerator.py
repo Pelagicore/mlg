@@ -94,20 +94,22 @@ class FilePlacer:
 			artist = artists.next()
 			for i in range(0,args.max_albums_per_artist):
 				print args.album_naming_strategy
-				album = self._generateAlbumName(
+				album = albums.next()
+				f_album = self._generateAlbumName(
 			                          args.album_naming_strategy,
-			                          artists, albums)
-				if not album:
-					album = albums.next()
+			                          artist, album)
+				if not f_album:
+					f_album = albums.next()
 				if (num_generated >= args.num_files):
 					break
 				remaining = args.num_files - num_generated
 				props["artist"] = artist
+				props["album"] = album
 				gen.setPersistantProperties(props)
 				numberOfTracks = randint(
 				    min(remaining, args.min_files_per_album),
 				    min(remaining, args.max_files_per_album))
-				self._placeAlbum(numberOfTracks, gen, album)
+				self._placeAlbum(numberOfTracks, gen, f_album)
 				num_generated = num_generated +\
 						numberOfTracks
 		self._performActions(args.destination_dir)
@@ -133,9 +135,7 @@ class FilePlacer:
 
 		while (num_generated < args.num_files):
 			artist = artists.next()
-			album = self._generateAlbumName(
-			                          args.album_naming_strategy,
-			                          artists, albums)
+			album = albums.next()
 			if album: props["album"] = album
 			gen.setPersistantProperties(props)
 			self.placeFileGenerator(gen)
@@ -173,7 +173,7 @@ class FilePlacer:
 		else:
 			print "Tree is empty!"
 
-	def _generateAlbumName(self, scheme, artists, albums):
+	def _generateAlbumName(self, scheme, artist, album):
 		""" Generate an album name, potentially consuming elements from
 		the artists and albums
 		Parameters
@@ -187,8 +187,6 @@ class FilePlacer:
 			Pool of albums to pick from
 		"""
 		if scheme == "music":
-			artist = artists.next()
-			album = albums.next()
 			return "%s - %s" % (artist, album)
 		if scheme == "date":
 			return "%s-%02d" %\
