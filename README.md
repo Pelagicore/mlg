@@ -18,6 +18,8 @@ Run the script without any parameters to see the available parameters. The gener
 
 The generator modules sometimes have module-specific configuration options, you can list these by issuing `--help` after selecting a generator module: `python MLG.py MP3FileGenerator --help`.
 
+The wiki contains a sample run where GIF files are generated: https://github.com/Pelagicore/mlg/wiki/Sample-run
+
 #### Parameters
 There are two kinds of parameters for the script, the common parameters and the generator-specific parameters. The common parameters are supplied before a generator module is chosen, and the generator-specific parameters are supplied after the generator is chosen.
 
