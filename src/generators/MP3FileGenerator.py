@@ -59,26 +59,28 @@ class MP3FileGenerator (AbstractFileGenerator):
 		properties["album"] = self._get_property("TALB", properties)
 		album = properties["album"]
 		count = self._get_property("size_multiplier", properties)
-		art = self._generate_album_art(album)
+		artf = self._generate_album_art(album)
 		brokenness = self._get_property("brokenness", properties)
 		fd = self.getRandomFile(count * 1048576)
 
 		cmd = ("%s %s --scale 0.01" +\
 		       " -r -b 320 -s 44 --ti \"%s\" - > \"%s\"") % \
-			(self.lame_binary, fd.name, art, filename)
+			(self.lame_binary, fd.name, artf.name, filename)
 		process = subprocess.call(cmd, shell=True)
 		process = process + self._set_tags(properties, filename,
 		              brokenness)
 
 		fd.close()
+		artf.close()
 		return process == 0
 
 	def _generate_album_art(self, text):
+		fname = tempfile.NamedTemporaryFile(suffix=".jpg")
 		cmd = ("%s -size 300x300 -fill white -background orange "+\
-		"-gravity center label:\"%s\" /tmp/canvas.jpg") %\
-		   (self.convert_binary, text)
+		"-gravity center label:\"%s\" %s") %\
+		   (self.convert_binary, text, fname.name)
 		process = subprocess.call(cmd, shell=True)
-		return "/tmp/canvas.jpg"
+		return fname
 
 	def _get_property(self, prop, properties):
 		if properties is not None and prop in properties:

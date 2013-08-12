@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 This module is used to wrap the generator modules and supply them with
 parameters set via the command line. This module serves as the main entry-point

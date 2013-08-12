@@ -1,5 +1,5 @@
 from src.generators.abstract.AbstractFileGenerator import AbstractFileGenerator
-import os, binascii, subprocess, random, hashlib
+import os, binascii, subprocess, random, hashlib, tempfile
 import src.Sentences as s
 from random import randint, choice
 from distutils import spawn
@@ -12,9 +12,11 @@ class ImageFileGenerator (AbstractFileGenerator):
 	def getFile(self, location = "/tmp/", properties = {}):
 		properties = dict(self.properties.items() + properties.items())
 		self.location = location
-		filename = self._get_filename(properties)
-		if (self._generate_file(filename, properties)):
-			return filename
+		fd = self._get_file(properties)
+		res = self._generate_file(fd.name, properties)
+		os.system("rm %s_original" % fd.name)
+		if res:
+			return fd.name
 		else:
 			return None
 
@@ -91,15 +93,15 @@ class ImageFileGenerator (AbstractFileGenerator):
 		retval = subprocess.call(cmd, shell=True)
 		return retval
 
-	def _get_filename(self, properties):
-		filename = None
+	def _get_file(self, properties):
+		fd = None
 		if properties is not None and "filename" in properties:
-			filename = properties["filename"]
+			fd = open(properties["filename"])
 		else:
 			extension = self._get_property("extension", properties)
-			filename = \
-			 hashlib.md5(str(random.random())).hexdigest() +\
-			 ".%s" % extension
-		assert(filename != None)
-		return os.path.join(self.location, filename)
+			fd = tempfile.NamedTemporaryFile(suffix="."+extension,
+		          delete=False)
+			fd.close()
+		assert(fd != None)
+		return fd
 
