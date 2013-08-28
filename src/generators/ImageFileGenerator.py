@@ -49,7 +49,7 @@ class ImageFileGenerator (AbstractFileGenerator):
 		elif prop == "Title": return s.getSentence()
 		elif prop == "Artist": return s.getFullName()
 		elif prop == "Author": return s.getFullName()
-		elif prop == "DateCreated":
+		elif prop == "Date":
 			y = randint(1900, 2014)
 			m = randint(1,12)
 			d = randint(1,28)
@@ -77,7 +77,7 @@ class ImageFileGenerator (AbstractFileGenerator):
 	def _set_tags(self, properties, fname, brokenness):
 		retval = 0
 		cmd = "%s " % self.exiftool_binary
-		for fld in ["Title", "Author", "Artist", "DateCreated", "Make", 
+		for fld in ["Title", "Author", "Artist", "Date", "Make",
 		"Model", "Copyright", "WhiteBalance", "Fnumber", "Flash",
 		"FocalLength", "ExposureTime", "ISO", "Description", "Creator",
 		"Comment", "City", "State", "Address", "Country",
