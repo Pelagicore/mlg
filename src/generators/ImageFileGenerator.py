@@ -68,7 +68,8 @@ class ImageFileGenerator (AbstractFileGenerator):
 		elif prop == "Model": return s.getSurname()
 		elif prop == "Copyright": return s.getSentence(5)
 		elif prop == "WhiteBalance": return choice(["AUTO", "MANUAL"])
-		elif prop == "Fnumber": return "1/%d" % randint(2,8)
+		elif prop == "Fnumber": return "%d" % choice([0.7, 0.8, 1.0,
+		              2.2, 1.4, 1.7, 2, 2.4, 2.8, 3.3, 4, 4.8, 5.6])
 		elif prop == "Flash": return choice(["ON", "OFF"])
 		elif prop == "FocalLength": return randint(1,1000)
 		elif prop == "ExposureTime": return randint(1,1000)
