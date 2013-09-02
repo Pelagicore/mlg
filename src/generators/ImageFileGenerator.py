@@ -49,11 +49,21 @@ class ImageFileGenerator (AbstractFileGenerator):
 		elif prop == "Title": return s.getSentence()
 #		elif prop == "Artist": return s.getFullName()
 		elif prop == "Author": return s.getFullName()
-		elif prop == "Date":
+		elif prop == "Date" or \
+		     prop == "CreationTime" or \
+		     prop == "-PNG:CreationTime":
 			y = randint(1900, 2014)
 			m = randint(1,12)
 			d = randint(1,28)
 			return "%04d:%02d:%02d" % (y,m,d)
+		elif prop == "-EXIF:DateTimeOriginal":
+			y = randint(1900, 2014)
+			m = randint(1,12)
+			d = randint(1,28)
+			H = randint(0,24)
+			M = randint(0,59)
+			S = randint(0,59)
+			return "%04d:%02d:%02d %02d:%02d:%02d" % (y,m,d,H,M,S)
 		elif prop == "Make": return s.getSurname()
 		elif prop == "Model": return s.getSurname()
 		elif prop == "Copyright": return s.getSentence(5)
