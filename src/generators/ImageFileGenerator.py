@@ -47,7 +47,7 @@ class ImageFileGenerator (AbstractFileGenerator):
 		elif prop == "extension":
 			return choice(["jpg", "png", "gif", "tiff"])
 		elif prop == "Title": return s.getSentence()
-		elif prop == "Artist": return s.getFullName()
+#		elif prop == "Artist": return s.getFullName()
 		elif prop == "Author": return s.getFullName()
 		elif prop == "Date":
 			y = randint(1900, 2014)
@@ -64,7 +64,7 @@ class ImageFileGenerator (AbstractFileGenerator):
 		elif prop == "ExposureTime": return randint(1,1000)
 		elif prop == "ISO": return choice([100,200,300,400,500,600])
 		elif prop == "Description": return s.getSentence(20)
-		elif prop == "Creator": return s.getFullName()
+#		elif prop == "Creator": return s.getFullName()
 		elif prop == "Comment": return s.getSentence(20)
 		elif prop == "City": return s.getFirstName()+"stown"
 		elif prop == "State": return s.getFirstName()+"ina"
@@ -77,11 +77,31 @@ class ImageFileGenerator (AbstractFileGenerator):
 	def _set_tags(self, properties, fname, brokenness):
 		retval = 0
 		cmd = "%s " % self.exiftool_binary
-		for fld in ["Title", "Author", "Artist", "Date", "Make",
-		"Model", "Copyright", "WhiteBalance", "Fnumber", "Flash",
-		"FocalLength", "ExposureTime", "ISO", "Description", "Creator",
-		"Comment", "City", "State", "Address", "Country",
-		"GPSLongitude", "GPSLatitude"]:
+		for fld in ["Title",
+		            "Author",
+#		            "Artist",
+		            "Date",
+		            "Make",
+		            "Model",
+		            "Copyright",
+		            "WhiteBalance",
+		            "Fnumber",
+		            "Flash",
+		            "FocalLength",
+		            "ExposureTime",
+		            "ISO",
+		            "Description",
+#		            "Creator",
+		            "Comment",
+		            "City",
+		            "State",
+		            "Address",
+		            "Country",
+		            "CreationTime",
+			    "-PNG:CreationTime",
+			    "-EXIF:DateTimeOriginal",
+		            "GPSLongitude",
+		            "GPSLatitude"]:
 			if randint(1,100) > brokenness:
 				fldval = self._get_property(fld, properties)
 				cmd = cmd + " -%s=\"%s\" " %\
